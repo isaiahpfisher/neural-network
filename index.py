@@ -19,19 +19,21 @@ def prepare_data():
     """
     
     X = np.array([
-        [150, 70],
-        [254, 73],
-        [312, 68],
-        [120, 60],
-        [154, 61],
-        [212, 65],
-        [216, 67],
-        [145, 67],
-        [184, 64],
-        [130, 69]
+        [0, 0],
+        [0, 1],
+        [1, 0],
+        [1, 1]
     ])
-    y = np.array([0,1,1,0,0,1,1,0,1,0])
-    m = 10
+
+    y = np.array([
+        [0],
+        [1],
+        [1],
+        [0]
+    ])
+    
+    
+    m = 4
     A0 = X.T
     Y = y.reshape(n[L], m)
     
@@ -124,7 +126,7 @@ def backprop_layer_1(propagator_dC_dA1, A1, A0, W1):
     dC_dW1 = dC_dZ1 @ dZ1_dW1.T
     assert dC_dW1.shape == (n[1], n[0])
 
-    dC_db1 = np.sum(dC_dW1, axis=1, keepdims=True)
+    dC_db1 = np.sum(dC_dZ1, axis=1, keepdims=True)
     assert dC_db1.shape == (n[1], 1)
 
     return dC_dW1, dC_db1
@@ -132,8 +134,8 @@ def backprop_layer_1(propagator_dC_dA1, A1, A0, W1):
 def train(A0, Y):
     global W3, W2, W1, b3, b2, b1
     
-    epochs = 1000
-    alpha = 0.01
+    epochs = 2000
+    alpha = 1.0
     costs = []
     
     for e in range(epochs):
